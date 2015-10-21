@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CubeBehavior : MonoBehaviour {
 	GameController aGameController;
+	public int x;
+	public int y;
 
 	// Use this for initialization
 	void Start () {
@@ -12,7 +14,7 @@ public class CubeBehavior : MonoBehaviour {
 
 	void OnMouseDown ()
 	{
-		aGameController.ProcessClickedCube (this.gameObject);
+		aGameController.ProcessClickedCube (this.gameObject, x, y);
 	}
 	// Update is called once per frame
 	void Update () {

@@ -1,7 +1,10 @@
 ﻿public class Airplane 
 {
-	bool active;
+	public bool active;
 
-	int x;
-	int y;
+	public int x;
+	public int y;
+
+	public int cargo;
+	public int cargoCapacity;
 }
