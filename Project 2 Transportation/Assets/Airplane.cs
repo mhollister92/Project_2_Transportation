@@ -41,4 +41,11 @@
 			x -= 1;
 		}
 	}
+
+	public void AddCargo ()
+	{
+		if (active && cargo < cargoCapacity) {
+			cargo += 10;
+		}
+	}
 }

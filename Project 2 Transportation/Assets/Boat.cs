@@ -33,6 +33,13 @@
 		}
 	}
 
+	public void AddCargo()
+	{
+		if (active && cargo < cargoCapacity) {
+			cargo += 10;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 	
