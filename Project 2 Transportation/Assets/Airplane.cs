@@ -1,21 +1,15 @@
 ﻿public class Airplane 
 {
-	public bool active;
+	public bool active = false;
 
 	public int x;
 	public int y;
 
-	//private int xDirection;
-	//private int yDirection;
-
 	public int cargo = 0;
 	public int cargoCapacity = 90;
 
-	//public void SetMoveDirection(int xMoveDirection, int yMoveDirection)
-	//{
-		//xDirection = xMoveDirection;
-		//yDirection = yMoveDirection;
-	//}
+	public float turn = 1.5f;
+	public float timeToAct;
 
 	public void MoveAirplane(int xLocation, int yLocation)
 	{

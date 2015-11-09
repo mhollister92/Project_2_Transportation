@@ -1,12 +1,15 @@
 ﻿public class Boat {
 
-	public bool active;
+	public bool active = false;
 
 	public int x;
 	public int y;
 
 	public int cargo;
 	public int cargoCapacity = 200;
+
+	public float turn = 4.5f;
+	public float timeToAct;
 
 	public void moveBoat (int xLocation, int yLocation)
 	{
@@ -40,13 +43,4 @@
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

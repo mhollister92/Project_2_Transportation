@@ -10,13 +10,11 @@ public class GameController : MonoBehaviour {
 	Airplane myAirplane;
 	Train myTrain;
 	Boat myBoat;
-
-	float turn = 1.5f;
+	
     int score = 0;
-	float timeToAct;
 
-	int xLocation = 0;
-	int yLocation = 8;
+	int xLocation;
+	int yLocation;
 
 	float timer;
 	float minutes;
@@ -119,36 +117,37 @@ public class GameController : MonoBehaviour {
 		myAirplane.x = 0;
 		myAirplane.y = 8;
 		allCubes [0, 8].GetComponent<Renderer> ().material.color = Color.red;
-		myAirplane.active = false;
 
 		//set start location of train
 		myTrain.x = 0;
 		myTrain.y = 0;
 		allCubes [0, 0].GetComponent<Renderer> ().material.color = Color.green;
-		myTrain.active = false;
 
 		//set start location of boat
 		myBoat.x = 15;
 		myBoat.y = 8;
 		allCubes [15, 8].GetComponent<Renderer> ().material.color = Color.blue;
-		myBoat.active = false;
 
 		//make bottom corner depot and turn black (Need to keep it from turning white after airplane is there)
 		allCubes [15, 0].GetComponent<Renderer> ().material.color = Color.black;
 
-		timeToAct = turn;
+		myAirplane.timeToAct = myAirplane.turn;
+		myTrain.timeToAct = myTrain.turn;
+		myBoat.timeToAct = myBoat.turn;
 	}
 
 	void OnGUI()
 	{
 		//score and cargo
-		GUI.Label (new Rect (5, 1, 100, 20), "Score: " + score);
+		GUI.Label (new Rect (5, 1, 100, 20), "Score: " + score.ToString ());
 		if (myAirplane.active) {
-			GUI.Label (new Rect (150, 1, 100, 20), "Cargo: " + myAirplane.cargo);
+			GUI.Label (new Rect (150, 1, 100, 20), "Cargo: " + myAirplane.cargo.ToString ());
 		} else if (myTrain.active) {
-			GUI.Label (new Rect (150, 1, 100, 20), "Cargo: " + myTrain.cargo);
+			GUI.Label (new Rect (150, 1, 100, 20), "Cargo: " + myTrain.cargo.ToString ());
 		} else if (myBoat.active) {
-			GUI.Label (new Rect (150, 1, 100, 20), "Cargo: " + myBoat.cargo);
+			GUI.Label (new Rect (150, 1, 100, 20), "Cargo: " + myBoat.cargo.ToString ());
+		} else {
+			GUI.Label (new Rect (150, 1, 100, 20), "Cargo: ");
 		}
 		//timer
 		timer = Time.time;
@@ -186,73 +185,82 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		//things to do every turn
-		if (Time.time >= timeToAct && myAirplane.active) {
+		//things to do when airplane is active every turn
+		if (Time.time >= myAirplane.timeToAct) {
 			//increase cargo
-			if(myAirplane.x == 0 && myAirplane.y == 8 && myAirplane.active)
+			if(myAirplane.x == 0 && myAirplane.y == 8)
 			{
 				myAirplane.AddCargo ();
 			}
 			//if cube is on depot, empty cargo
-			else if(myAirplane.x == 15 && myAirplane.y == 0 && myAirplane.active)
+			else if(myAirplane.x == 15 && myAirplane.y == 0)
 			{
 				score += (myAirplane.cargo/10);
 				myAirplane.cargo = 0;
 			}
 			//turn old airplane spot into sky
-			allCubes[myAirplane.x, myAirplane.y].GetComponent<Renderer>().material.color = Color.white;
-			//move airplane
-			myAirplane.MoveAirplane(xLocation, yLocation);
-			//turn new airplane cube yellow
-			allCubes[myAirplane.x, myAirplane.y].GetComponent<Renderer>().material.color = Color.yellow;
-			timeToAct += turn;
+			if(myAirplane.active)
+			{
+				allCubes[myAirplane.x, myAirplane.y].GetComponent<Renderer>().material.color = Color.white;
+				//move airplane
+				myAirplane.MoveAirplane(xLocation, yLocation);
+				//turn new airplane cube yellow
+				allCubes[myAirplane.x, myAirplane.y].GetComponent<Renderer>().material.color = Color.yellow;
+			}
+			myAirplane.timeToAct += myAirplane.turn;
 		}
-
-		else if (Time.time >= timeToAct && myTrain.active) {
+		//things to do when train is active every turn
+		else if (Time.time >= myTrain.timeToAct) {
 			//if cube is on start spot, increase cargo
-			if(myTrain.x == 0 && myTrain.y == 0 && myTrain.active)
+			if(myTrain.x == 0 && myTrain.y == 0)
 			{
 				myTrain.AddCargo();
 			}
-			else if(myTrain.x == 15 && myTrain.y == 0 && myTrain.active)
+			else if(myTrain.x == 15 && myTrain.y == 0)
 			{
 				score += (myTrain.cargo/10);
 				myTrain.cargo = 0;
 			}
-			//turn old train spot into sky
-			allCubes[myTrain.x, myTrain.y].GetComponent<Renderer>().material.color = Color.white;
-			//move train
-			myTrain.moveTrain(xLocation, yLocation);
-			//turn new train cube yellow
-			allCubes[myTrain.x, myTrain.y].GetComponent<Renderer>().material.color = Color.yellow;
-			timeToAct += 2*turn;
+			if(myTrain.active)
+			{
+				//turn old train spot into sky
+				allCubes[myTrain.x, myTrain.y].GetComponent<Renderer>().material.color = Color.white;
+				//move train
+				myTrain.moveTrain(xLocation, yLocation);
+				//turn new train cube yellow
+				allCubes[myTrain.x, myTrain.y].GetComponent<Renderer>().material.color = Color.yellow;
+			}
+			myTrain.timeToAct += myTrain.turn;
 		}
-
-		else if (Time.time >= timeToAct && myBoat.active) {
-			if(myBoat.x == 15 && myBoat.y == 8 && myBoat.active)
+		//things to do when boat is active every turn
+		else if (Time.time >= myBoat.timeToAct) {
+			//check if boat is on start or depot
+			if(myBoat.x == 15 && myBoat.y == 8)
 			{
 				myBoat.AddCargo ();
 			}
-			else if(myBoat.x == 15 && myBoat.y == 0 && myBoat.active)
+			else if(myBoat.x == 15 && myBoat.y == 0)
 			{
 				score += (myBoat.cargo/10);
 				myBoat.cargo = 0;
 			}
 			//turn old boat spot into sky
-			allCubes[myBoat.x, myBoat.y].GetComponent<Renderer>().material.color = Color.white;
-			//move boat
-			myBoat.moveBoat(xLocation, yLocation);
-			//turn new boat cube yellow
-			allCubes[myBoat.x, myBoat.y].GetComponent<Renderer>().material.color = Color.yellow;
-
-			timeToAct += 3*turn;
+			if(myBoat.active)
+			{
+				allCubes[myBoat.x, myBoat.y].GetComponent<Renderer>().material.color = Color.white;
+				//move boat
+				myBoat.moveBoat(xLocation, yLocation);
+				//turn new boat cube yellow
+				allCubes[myBoat.x, myBoat.y].GetComponent<Renderer>().material.color = Color.yellow;
+			}
+			myBoat.timeToAct += myBoat.turn;
 		}
 		//keeps depot black
 		if ((myAirplane.x != 15 || myAirplane.y != 0) && (myTrain.x != 15 || myTrain.y != 0) &&
 		    (myBoat.x != 15 || myBoat.y != 0)) {
 			allCubes [15, 0].GetComponent<Renderer> ().material.color = Color.black;
 		}
-		//keeps cubes same color if they overlap
+		//keeps cubes same color if they travel over another
 		if ((myAirplane.x != myBoat.x || myAirplane.y != myBoat.y) && 
 		    (myTrain.x != myBoat.x || myTrain.y != myBoat.y) && 
 		    (myAirplane.x != myTrain.x || myAirplane.y != myTrain.y))

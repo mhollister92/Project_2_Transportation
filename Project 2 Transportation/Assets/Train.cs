@@ -1,12 +1,15 @@
 ﻿public class Train{
 
-	public bool active;
+	public bool active = false;
 
 	public int x;
 	public int y;
 
 	public int cargo;
 	public int cargoCapacity = 550;
+
+	public float turn = 6f;
+	public float timeToAct;
 
 	public void moveTrain (int xLocation, int yLocation)
 	{
@@ -39,13 +42,5 @@
 			cargo += 10;
 		}
 	}
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }
