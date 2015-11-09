@@ -47,8 +47,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Airplane.cs" />
+     <Compile Include="Assets\Boat.cs" />
      <Compile Include="Assets\CubeBehavior.cs" />
      <Compile Include="Assets\GameController.cs" />
+     <Compile Include="Assets\Train.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
